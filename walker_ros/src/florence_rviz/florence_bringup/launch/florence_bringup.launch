@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="gui" default="false" />
+	<param name="robot_description" command="cat $(find florence_description)/urdf/florenceROS.urdf" />
+	<param name="use_gui" value="$(arg gui)"/>
+	<node name="world_broadcaster" pkg="tf" type="static_transform_publisher" args ="0 0 0 0 0 0 World FloBase 100" />
+	<node name="test_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+	<node name="test_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find florence_bringup)/rviz_config/florence.rviz" required="true" />
+</launch>

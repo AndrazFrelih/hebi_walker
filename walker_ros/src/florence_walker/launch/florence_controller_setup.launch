@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="gui" default="false"/>
+    <arg name="topic" default="[joint_states]"/>
+    <arg name="recalib" default="false"/>
+    <rosparam command="load" file="$(find florence_walker)/launch/config/yaml/florence_walker.yaml"/>
+    <rosparam command="load" file="$(find florence_walker)/launch/config/yaml/fs_offs.yaml"/>
+    <rosparam command="load" file="$(find florence_walker)/launch/config/yaml/joint_offs.yaml"/>
+    <rosparam command="load" file="$(find florence_walker)/launch/config/yaml/Klqr.yaml"/>
+
+    <group ns="meas">
+        <param name="tf_prefix" value="meas"/>
+        <param name="robot_description" command="cat $(find florence_description)/urdf/florenceROS.urdf" />
+        <param name="use_gui" value="$(arg gui)"/>
+        <!--node name="world_broadcaster" pkg="tf" type="static_transform_publisher" args ="0 0 0 0 0 0 World meas/World 100" /-->
+        <node name="meas_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+            <param name="use_gui" value="$(arg gui)"/>
+            <rosparam unless="$(arg gui)" param="source_list" subst_value="True"> 
+                $(arg topic) 
+            </rosparam>
+        </node>
+        <node name="meas_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    </group>
+
+    <group ns="cmd">
+        <param name="tf_prefix" value="cmd"/>
+        <param name="robot_description" command="cat $(find florence_description)/urdf/florenceROScmd.urdf" />
+        <param name="use_gui" value="false"/>
+    	<!--node name="world_broadcaster" pkg="tf" type="static_transform_publisher" args ="0 0 0 0 0 0 World cmd/World 100" /-->
+        <node name="cmd_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+            <param name="use_gui" value="false"/>
+            <rosparam unless="$(arg gui)" param="source_list" subst_value="True"> 
+                $(arg topic) 
+            </rosparam>
+        </node>
+        <node name="cmd_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    </group>
+</launch>

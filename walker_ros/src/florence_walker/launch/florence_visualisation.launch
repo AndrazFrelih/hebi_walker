@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+	<!--node name="rviz" pkg="rviz" type="rviz" args="-d $(find florence_bringup)/rviz_config/florence.rviz" respawn="true"/-->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find florence_bringup)/rviz_config/florence.rviz" required="true" />
+	<!--node name="florence_republisher" pkg="florence_walker" type="florence_vis_republish_node" /-->
+</launch>

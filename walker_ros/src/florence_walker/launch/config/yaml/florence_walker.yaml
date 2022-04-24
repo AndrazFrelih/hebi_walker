@@ -1,0 +1,129 @@
+#pattern generation
+pgen:
+  config:
+    mode: 1 # 0 - balancer, 1 - weight shifting, 2 - stepping in space, 3 - forward steps
+    dir:  0 # 0 - left foot starts, 1 - right foot starts
+  times:
+    Tini: 3.0
+    Tfin: 5.0
+    Tss:  0.5
+    Tds:  1.5
+  step:
+    def:
+      x: 0.1  # step length
+      z: 0.2  # step height 
+    perc:
+      py: 1   # how far to the center of the foot position should the zmp go (zmpy = py * Ly)
+
+#trajectory generation
+tgen:
+  Nprev: 500  # number of preview steps
+  zdes: 0.59  # desired com height
+
+#state estimation
+est:
+  eulconv: "zyx"  #used euler convention
+  fsen:
+    fnames:
+      left:  ["LC_L1","LC_L2","LC_L3","LC_L4"]
+      right: ["LC_R1","LC_R2","LC_R3","LC_R4"]
+  endeffector:
+    names:
+      left:  "EE_L"
+      right: "EE_R"
+  com:
+    alpha_cp: 0.005   # com velocity filter constant
+    alpha_cpp: 0.0001 # com accleration filter constant
+  sfus:
+    alpha_tra: 0.0  # correnction factor for position (should not be zero for walking)
+    alpha_ori: 0.0  # correction factor for orientation (should not be zero for walking)
+    Wimu: 0.00 # weight for the imu measurement when performing sensor fusion (0 - neglect sensor)
+    imu:
+      names: ["IMU_L","IMU_R"]
+  prob: # probabilistic model for weight computation
+    coef: 
+      zmp: [1.031, -87.88, -115.2] # p(x,y) = k1 + k2*x² + k3*y²
+      cont:  [-0.08325, 0.0126, -4.874e-05, 6.253e-08] # p(x) = k1 + k2*x + k3*x² + k4*x⁴
+
+#balancer
+bal:
+  act_int: 1
+  gains:
+    Kleak:  [0.1,0.1] # integrator leakage (so that there is no wind up)
+    Kdcm: 
+      prop: [1,1]
+      int:  [0.1,0.1]
+    Kzmp:   [0.99,0.8]
+    Kcom:   [2.9,3.5]
+
+#full body optimisation
+ikine:
+  init:
+    pos: [-0.0071,0.0107,0.7249]  # this position should correspond to the value stored in tgen/zdes. Obtain it from the matlab script ctrl_ds_setup.m
+    ori: [0, 0, 0]
+  act_int: 0
+  fdc:
+    act:  0 # is foot damping control active?
+    sets: [0.8,0.9,1.0] # percentages that divide the foot in different areas. From 0->set(0) is Z1, from set(0)->set(1) is Z2 and from set(1)->set(2) is Z3. See IKine module for the specific use of sets (foot damping control)
+  wshift_offs: 0
+  gains:
+    Kq: [0.01,0.01,0.01,0.01,0.01,0.01]
+    Kwfb: [100,100,100]
+    Kvleg:
+      prop: [10, 10, 10]
+      int:  [ 0, 0, 0]
+    Kwleg:  [ 20, 20, 20]
+    foot_diff:      #foot difference (pressure) control
+      act:  0
+      Kdfz: 0.001     
+      Tvdc: 1.0
+    Kfdc: [1, 1]    #foot damping control gains
+    Kcom:
+      prop: [ 1, 1, 10]
+      int:  [ 0, 0, 0]
+  lims: [2.5,2.5,2.5,2.5,2.5,2.5]
+
+#controller interface - todo move it to another file that should be created by the
+ctrl:
+  full_controller:
+    type: "FlorenceFullController"
+    publish_rate: 100
+  joint_controller:
+    type: "FlorenceJointController"
+    publish_rate: 100
+    times:
+      Tini: 1.0
+      Ttra: 5.0
+  com_shift_controller:
+    type: "FlorenceComShiftController"
+    publish_rate: 100
+  ikine_test_controller:
+    type: "FlorenceIkineTestController"
+    publish_rate: 100
+
+#hardware interface
+hw:
+  fam_name: "Florence"
+  joint:
+    names: ["LefHipYaw","LefHipRoll","LefHipPitch","LefKneePitch","LefAnklePitch","LefAnkleRoll","RigHipYaw","RigHipRoll","RigHipPitch","RigKneePitch","RigAnklePitch","RigAnkleRoll"]
+    offs:  [-30, 0, 0, 0, -90, 0, +30, 0, 0, 0, +90, 0]
+    qhome: [0.2540,-0.2685,-0.8398,1.5218,-0.6820,0.2685,-0.2745,0.3028,-0.8497,1.5168,0.6670,-0.3028]
+  motor:
+    names: ["leftHip1","leftHip2","leftHip3A","leftHip3B","leftKneeA","leftKneeB","leftAnkle1","leftAnkle2","rightHip1","rightHip2","rightHip3A","rightHip3B","rightKneeA","rightKneeB","rightAnkle1","rightAnkle2"]
+    map:   [0,   1,   2,   2,   3,   3,   4,   5,   6,   7,   8,   8,   9,   9,   10,  11 ]
+    coef:  [1.0, 1.0, 0.5,-0.5,-0.5, 0.5, 1.0, 1.0, 1.0, 1.0, -0.5,0.5, 0.5,-0.5, 1.0, 1.0]
+    coupl:
+      ind1: [2,4,10,12]
+      ind2: [3,5,11,13]
+    gains:
+      Kp:  [  70,  70, 200, 200, 150, 150,  80, 50]
+      Ki:  [   0,   0,   0,   0,   0,   0,   0,   0]
+      Kd:  [0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.01]
+  fsen:
+    names: ["leftFoot","rightFoot"]
+  #there are 8 pins but only four of them are connected to load cells. Order: 4 - front left, 7 - front right, 6 - back right, 5 - back left
+    pins: [6,5,4,7]
+  imu:
+  #there are 18 IMUs (one for every module - 16 motors + 2 force sensor modules)
+    used: [0,8]
+    ori_in_lf: [[0,0,-30],[0,0,30]] # orientation left and right [roll,pitch,yaw]

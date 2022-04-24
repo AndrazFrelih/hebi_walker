@@ -1,0 +1,25 @@
+<library path="lib/libflorence_walker">
+	<class name="FlorenceJointController" type="FlorenceJointController" base_class_type="controller_interface::ControllerBase">
+		<description>
+			Controller that is to be executed at the initialisation phase before the robot is lowered to the ground.
+		</description>
+	</class>
+
+	<class name="FlorenceIkineTestController" type="FlorenceIkineTestController" base_class_type="controller_interface::ControllerBase">
+		<description>
+			Is executed after the FlorenceJointController, however this is only a test of the Ikine.
+		</description>
+	</class>
+
+	<class name="FlorenceComShiftController" type="FlorenceComShiftController" base_class_type="controller_interface::ControllerBase">
+		<description>
+			Controller that adapts the COM height before the FlorenceFullController is called. It replaces the FlorenceJointController.
+		</description>
+	</class>
+
+	<class name="FlorenceFullController" type="FlorenceFullController" base_class_type="controller_interface::ControllerBase">
+		<description>
+			Full florence walking controller.
+		</description>
+	</class>
+</library>

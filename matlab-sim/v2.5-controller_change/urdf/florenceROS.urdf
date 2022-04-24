@@ -1,0 +1,788 @@
+<?xml version="1.0"?>
+<robot name="Florence">
+    <link name="World"></link>
+
+    ## BASE LINK
+    <link name="FloBase">
+        <inertial>
+            <origin xyz="0.0066 -0.0002 0.0545" rpy="0 0 0"/>
+            <mass value="18.3700"/>
+            <inertia ixx="0.1768"  ixy="-0.0010"  ixz="0.0231" iyy="0.1913" iyz="0" izz="0.2864" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Base_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body base
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <cylinder radius="0.301" length="0.038"/>
+            </geometry>
+        </collision>
+        #collision body motor left
+        <collision>
+            <origin xyz="0.1680 0.0970 -0.0430" rpy="0 0 0.5236" />
+            <geometry>
+                <box size="0.1110 0.0740 0.0440"/>
+            </geometry>
+        </collision>
+        #collision body motor right
+        <collision>
+            <origin xyz="0.1680 -0.0970 -0.0430" rpy="0 0 -0.5236" />
+            <geometry>
+                <box size="0.1110 0.0740 0.0440"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="FloBaseJoint" type="fixed"><origin xyz="0 0 0.0" rpy="0 0 0"/><parent link="World"/><child link="FloBase"/></joint>
+
+
+    ## LINK 1:
+    # left
+    <link name="Link1L">
+        <inertial>
+            <origin xyz="-0.0490 0.0102 0.0914" rpy="0 0 0"/>
+            <mass value="0.7600"/>
+            <inertia ixx="0.9643E-3"  ixy="9.6590e-05"  ixz="2.2060e-04" iyy="8.5310e-04" iyz="-1.3100e-05" izz="8.2910e-04" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link1L_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body holder
+        <!--collision>
+            <origin xyz="-0.0380 -0.0350 0.0451" rpy="0 0 0" />
+            <geometry>
+                <box size="1.55e-05	 4e-05  0.000105"/>
+            </geometry>
+        </collision-->
+        #collision body motor
+        <collision>
+            <origin xyz="-0.0595    0.0185    0.1001" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0440 0.1110 0.0740"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="LefHipYaw" type="revolute">
+        <origin xyz="0.1841 0.1063 -0.0210" rpy="3.1416 0 0"/>
+        <parent link="FloBase"/>
+        <child link="Link1L"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+    # right
+    <link name="Link1R">
+        <inertial>
+            <origin xyz="-0.0490 0.0102 0.0914" rpy="0 0 0"/>
+            <mass value="0.7600"/>
+            <inertia ixx="9.6430e-04"  ixy="-5.4240e-05"  ixz="2.2610e-05" iyy="8.5310e-04" iyz="8.5980e-05" izz="8.2910e-04" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link1R_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body holder
+        <!--collision>
+           <origin xyz="-0.0380   -0.0250    0.0451" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0155 0.0400 0.1050"/>
+            </geometry>
+        </collision-->
+        #collision body motor
+        <collision>
+            <origin xyz="-0.0595   -0.0185    0.1001" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0440 0.1110 0.0740"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="RigHipYaw" type="revolute">
+        <origin xyz="0.1841 -0.1063 -0.0210" rpy="3.1416 0 0"/>
+        <parent link="FloBase"/>
+        <child link="Link1R"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+
+    ## LINK 2:
+    # left
+    <link name="Link2L">
+        <inertial>
+            <origin xyz="0.0110 -0.0002 0.0951" rpy="0 0 0"/>
+            <mass value="1.4279"/>
+            <inertia ixx="0.0051"  ixy="0"  ixz="-0.0001" iyy="0.0017" iyz="0.0001" izz="0.0052" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link2_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body motor 1
+        <collision>
+           <origin xyz="0.0185 -0.0595 0.1001" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0440 0.0740"/>
+            </geometry>
+        </collision>
+        #collision body motor 2
+        <collision>
+            <origin xyz="0.0185 0.0590 0.1001" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0440 0.0740"/>
+            </geometry>
+        </collision>
+        #collision body holder
+        <collision>
+            <origin xyz="-0.0050 0 0.0975" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0600 0.0750 0.1050"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="LefHipRoll" type="revolute">
+        <origin xyz="-0.0375 0 0.1001" rpy="0 -1.5708 0"/>
+        <parent link="Link1L"/>
+        <child link="Link2L"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+    # right
+    <link name="Link2R">
+        <inertial>
+            <origin xyz="0.0110 -0.0002 0.0951" rpy="0 0 0"/>
+            <mass value="1.4279"/>
+            <inertia ixx="0.0051"  ixy="0"  ixz="-0.0001" iyy="0.0017" iyz="0.0001" izz="0.0052" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link2_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body motor 1
+        <collision>
+           <origin xyz="0.0185 -0.0595 0.1001" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0440 0.0740"/>
+            </geometry>
+        </collision>
+        #collision body motor 2
+        <collision>
+            <origin xyz="0.0185 0.0590 0.1001" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0440 0.0740"/>
+            </geometry>
+        </collision>
+        #collision body holder
+        <collision>
+            <origin xyz="-0.0050 0 0.0975" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0600 0.0750 0.1050"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="RigHipRoll" type="revolute">
+        <origin xyz="-0.0375 0 0.1001" rpy="0 -1.5708 0"/>
+        <parent link="Link1R"/>
+        <child link="Link2R"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+    ## LINK 3:
+    # left
+    <link name="Link3L">
+        <inertial>
+            <origin xyz="0.2578 0 0" rpy="0 0 0"/>
+            <mass value="1.7659"/>
+            <inertia ixx="0.0109"  ixy="0"  ixz="0" iyy="0.0307" iyz="0" izz="0.0209" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link3_rtbox_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body motor 1
+        <collision>
+           <origin xyz="0.3070 0 -0.0605" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0740 0.0440"/>
+            </geometry>
+        </collision>
+        #collision body motor 2
+        <collision>
+           <origin xyz="0.3070 0 0.0605" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0740 0.0440"/>
+            </geometry>
+        </collision>
+        #collision body rod 1
+        <collision>
+           <origin xyz="0.1625 0 -0.1026" rpy="0 0 0" />
+            <geometry>
+                <box size="0.3000 0.0480 0.0350"/>
+            </geometry>
+        </collision>
+        #collision body rod 2
+        <collision>
+           <origin xyz="0.1625 0 0.1026" rpy="0 0 0" />
+            <geometry>
+                <box size="0.3000 0.0480 0.0350"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="LefHipPitch" type="revolute">
+        <origin xyz="0 0 0.1001" rpy="-1.5708 0 0"/>
+        <parent link="Link2L"/>
+        <child link="Link3L"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+    # right
+    <link name="Link3R">
+        <inertial>
+            <origin xyz="0.2578 0 0" rpy="0 0 0"/>
+            <mass value="1.7659"/>
+            <inertia ixx="0.0109"  ixy="0"  ixz="0" iyy="0.0307" iyz="0" izz="0.0209" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link3_rtbox_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body motor 1
+        <collision>
+           <origin xyz="0.3070 0 -0.0605" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0740 0.0440"/>
+            </geometry>
+        </collision>
+        #collision body motor 2
+        <collision>
+           <origin xyz="0.3070 0 0.0605" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0740 0.0440"/>
+            </geometry>
+        </collision>
+        #collision body rod 1
+        <collision>
+           <origin xyz="0.1625 0 -0.1026" rpy="0 0 0" />
+            <geometry>
+                <box size="0.3000 0.0480 0.0350"/>
+            </geometry>
+        </collision>
+        #collision body rod 2
+        <collision>
+           <origin xyz="0.1625 0 0.1026" rpy="0 0 0" />
+            <geometry>
+                <box size="0.3000 0.0480 0.0350"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="RigHipPitch" type="revolute">
+        <origin xyz="0 0 0.1001" rpy="-1.5708 0 0"/>
+        <parent link="Link2R"/>
+        <child link="Link3R"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+
+    ## LINK 4:
+    # left
+    <link name="Link4L">
+        <inertial>
+            <origin xyz="0.1945 0.0003 -0.0137" rpy="0 0 0"/>
+            <mass value="1.0127"/>
+            <inertia ixx="0.0010"  ixy="0.0001"  ixz="-0.0020" iyy="0.0222" iyz="0" izz="0.0218" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link4L_rtbox_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body motor
+        <collision>
+           <origin xyz="0.3065 0 -0.0420" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0740 0.0440"/>
+            </geometry>
+        </collision>
+
+        #collision body rod
+        <collision>
+           <origin xyz="0.1968 0 -0.0010" rpy="0 0 0" />
+            <geometry>
+                <box size="0.3225 0.0480 0.0370"/>
+            </geometry>
+        </collision>
+
+        #collision body holder
+        <collision>
+           <origin xyz="0.0055 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0600 0.0480 0.0749"/>
+            </geometry>
+        </collision>
+
+    </link>
+
+    <joint name="LefKneePitch" type="revolute">
+        <origin xyz="0.3255 0 0" rpy="0 0 0"/>
+        <parent link="Link3L"/>
+        <child link="Link4L"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+    # right
+    <link name="Link4R">
+        <inertial>
+            <origin xyz="0.1945 0.0003 -0.0137" rpy="0 0 0"/>
+            <mass value="1.0127"/>
+            <inertia ixx="0.0010"  ixy="-0.0001"  ixz="0.0020" iyy="0.0222" iyz="0" izz="0.0218" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link4R_rtbox_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body motor
+        <collision>
+           <origin xyz="0.3065 0 0.0420" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0740 0.0440"/>
+            </geometry>
+        </collision>
+
+        #collision body rod
+        <collision>
+           <origin xyz="0.1968 0 -0.0010" rpy="0 0 0" />
+            <geometry>
+                <box size="0.3225 0.0480 0.0370"/>
+            </geometry>
+        </collision>
+
+        #collision body holder
+        <collision>
+           <origin xyz="0.0055 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0600 0.0480 0.0749"/>
+            </geometry>
+        </collision>
+
+    </link>
+
+    <joint name="RigKneePitch" type="revolute">
+        <origin xyz="0.3255 0 0" rpy="0 0 0"/>
+        <parent link="Link3R"/>
+        <child link="Link4R"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+    ## LINK 5:
+    # left
+    <link name="Link5L">
+        <inertial>
+            <origin xyz="-0.0091 0.0112 0.0754" rpy="0 0 0"/>
+            <mass value="0.5637"/>
+            <inertia ixx="0.4810E-3"  ixy="-0.0306E-3"  ixz="0.0132E-3" iyy="0.7391E-3" iyz="-0.0105E-3" izz="0.4231E-3" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link5L_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body motor
+        <collision>
+           <origin xyz="-0.0185 0.0005 0.0990" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0440 0.0740"/>
+            </geometry>
+        </collision>
+
+        #collision body holder
+        <collision>
+           <origin xyz="0.0050 0.0297 0.0965" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0600 0.0155 0.1050"/>
+            </geometry>
+        </collision>
+
+    </link>
+
+    <joint name="LefAnklePitch" type="revolute">
+        <origin xyz="0.3250 0 0.0200" rpy="0 0 0"/>
+        <parent link="Link4L"/>
+        <child link="Link5L"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+    # right
+    <link name="Link5R">
+        <inertial>
+            <origin xyz="-0.0091 -0.0112 0.0777" rpy="0 0 0"/>
+            <mass value="0.5637"/>
+            <inertia ixx="0.5050E-3"  ixy="0.0306E-3"  ixz="0.0676E-3" iyy="0.7631E-3" iyz="0.0061E-3" izz="0.4231E-3" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link5R_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body motor
+        <collision>
+           <origin xyz="-0.0185 -0.0010 0.0990" rpy="0 0 0" />
+            <geometry>
+                <box size="0.1110 0.0440 0.0740"/>
+            </geometry>
+        </collision>
+
+        #collision body holder
+        <collision>
+           <origin xyz="0.0050 -0.0297 0.0965" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0600 0.0155 0.1050"/>
+            </geometry>
+        </collision>
+
+    </link>
+
+    <joint name="RigAnklePitch" type="revolute">
+        <origin xyz="0.3250 0 -0.0200" rpy="3.1416 0 0"/>
+        <parent link="Link4R"/>
+        <child link="Link5R"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+
+    ## LINK 6:
+    # left
+    <link name="Link6L">
+        <inertial>
+            <origin xyz="0.0712 0.0002 0.0266" rpy="0 0 0"/>
+            <mass value="1.2731"/>
+            <inertia ixx="0.0083"  ixy="0"  ixz="0.0003" iyy="0.0061" iyz="0" izz="0.0035" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link6_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body foot
+        <collision>
+           <origin xyz="0.1008 0 0.0330" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0367 0.1490 0.1670"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="LefAnkleRoll" type="revolute">
+        <origin xyz="0 0.0230 0.1001" rpy="1.5708 0 0"/>
+        <parent link="Link5L"/>
+        <child link="Link6L"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+    # right
+    <link name="Link6R">
+        <inertial>
+            <origin xyz="0.0712 -0.0002 0.0266" rpy="0 0 0"/>
+            <mass value="1.2731"/>
+            <inertia ixx="0.0083"  ixy="0"  ixz="0.0003" iyy="0.0061" iyz="0" izz="0.0035" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://florence_description/meshes/Link6_rem.stl" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        #collision body foot
+        <collision>
+           <origin xyz="0.1008 0 0.0330" rpy="0 0 0" />
+            <geometry>
+                <box size="0.0367 0.1490 0.1670"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="RigAnkleRoll" type="revolute">
+        <origin xyz="0 -0.0230 0.1001" rpy="-1.5708 0 0"/>
+        <parent link="Link5R"/>
+        <child link="Link6R"/>
+        <axis xyz="0 0 1" />
+        <limit lower="-1.5708" upper="1.5708" effort="150" velocity="1.5"/>
+    </joint>
+
+    ## END EFFECTOR:
+    # left
+    <link name="EE_L">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <joint name="EndEffectorL" type="fixed">
+        <origin xyz="0.1192 0 0.0331" rpy="0 1.5708 3.1416"/>
+        <parent link="Link6L"/>
+        <child link="EE_L"/>
+        <axis xyz="0 0 1" />
+    </joint>
+
+    # right
+    <link name="EE_R">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <joint name="EndEffectorR" type="fixed">
+        <origin xyz="0.1192 0 0.0331" rpy="0 1.5708 3.1416"/>
+        <parent link="Link6R"/>
+        <child link="EE_R"/>
+        <axis xyz="0 0 1" />
+    </joint>
+
+    ## LOAD CELLS LEFT:
+    <link name="LC_L1">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <link name="LC_L2">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <link name="LC_L3">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <link name="LC_L4">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <joint name="LC_L1joint" type="fixed">
+        <origin xyz="0.0520 0.0460 0" rpy="0 0 0"/>
+        <parent link="EE_L"/>
+        <child link="LC_L1"/>
+        <axis xyz="0 0 1" />
+    </joint>
+
+    <joint name="LC_L2joint" type="fixed">
+        <origin xyz="0.0520 -0.0460 0" rpy="0 0 0"/>
+        <parent link="EE_L"/>
+        <child link="LC_L2"/>
+        <axis xyz="0 0 1" />
+    </joint>
+
+    <joint name="LC_L3joint" type="fixed">
+        <origin xyz="-0.0520 -0.0460 0" rpy="0 0 0"/>
+        <parent link="EE_L"/>
+        <child link="LC_L3"/>
+        <axis xyz="0 0 1" />
+    </joint>
+
+    <joint name="LC_L4joint" type="fixed">
+        <origin xyz="-0.0520 0.0460 0" rpy="0 0 0"/>
+        <parent link="EE_L"/>
+        <child link="LC_L4"/>
+        <axis xyz="0 0 1" />
+    </joint>
+
+    ## LOAD CELLS RIGHT:
+    <link name="LC_R1">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <link name="LC_R2">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <link name="LC_R3">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <link name="LC_R4">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <joint name="LC_R1joint" type="fixed">
+        <origin xyz="0.0520 0.0460 0" rpy="0 0 0"/>
+        <parent link="EE_R"/>
+        <child link="LC_R1"/>
+        <axis xyz="0 0 1" />
+    </joint>
+
+    <joint name="LC_R2joint" type="fixed">
+        <origin xyz="0.0520 -0.0460 0" rpy="0 0 0"/>
+        <parent link="EE_R"/>
+        <child link="LC_R2"/>
+        <axis xyz="0 0 1" />
+    </joint>
+
+    <joint name="LC_R3joint" type="fixed">
+        <origin xyz="-0.0520 -0.0460 0" rpy="0 0 0"/>
+        <parent link="EE_R"/>
+        <child link="LC_R3"/>
+        <axis xyz="0 0 1" />
+    </joint>
+
+    <joint name="LC_R4joint" type="fixed">
+        <origin xyz="-0.0520 0.0460 0" rpy="0 0 0"/>
+        <parent link="EE_R"/>
+        <child link="LC_R4"/>
+        <axis xyz="0 0 1" />
+    </joint>
+
+    ## relevant IMUs
+    #  left IMU
+    <link name="IMU_L">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <joint name="IMU_L_joint" type="fixed">
+        <origin xyz="0.1841 0.1063 -0.0210" rpy="3.1416 0 0.5236"/>
+        <parent link="FloBase"/>
+        <child link="IMU_L"/>
+        <axis xyz="0 0 1" />
+    </joint>
+
+    #  right IMU
+    <link name="IMU_R">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0"  ixy="0"  ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+    <joint name="IMU_R_joint" type="fixed">
+        <origin xyz="0.1841 -0.1063 -0.0210" rpy="3.1416 0 -0.5236"/>
+        <parent link="FloBase"/>
+        <child link="IMU_R"/>
+        <axis xyz="0 0 1" />
+    </joint>
+</robot>

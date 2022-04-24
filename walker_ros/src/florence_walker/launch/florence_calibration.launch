@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+	<rosparam command="load" file="$(find florence_walker)/launch/config/yaml/florence_walker.yaml"/>
+	<node pkg="florence_walker" type="fsen_calib_node" name="fsen_calib" output="screen"/>
+	<arg name="delay" default="3"/>
+    <node pkg="florence_walker" type="joint_offs_comp_node" name="joint_offset_comp" output="screen" launch-prefix="bash -c 'sleep $(arg delay); $0 $@' "/>
+</launch>
